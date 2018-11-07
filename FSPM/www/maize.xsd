@@ -1,0 +1,181 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Plant">
+    <xs:complexType>
+      <xs:sequence>
+
+  <!-- OPTIONS -->
+        <xs:element name ="Options">
+          <xs:complexType>
+            <xs:sequence>
+
+              <xs:element name ="Simulation">
+               <xs:complexType>
+                <xs:sequence> 
+                  <!--Time step = 1 hour. Using a time step<1 doesnt work :( -->
+                  <xs:element name="TimeStep" type="xs:float" default="1" /> 
+                  <xs:element name="TotalTime" type="xs:integer" default="300" />
+                  <xs:element name="BaseTemperature" type="xs:float" default="6.0" />
+                </xs:sequence>
+               </xs:complexType>
+              </xs:element>
+
+              <xs:element name="Export">
+               <xs:complexType>
+                <xs:sequence>
+                  <!-- Export=0 -> no export / Export=1 -> SQL export / Export=2 CSV Export -->
+                  <xs:element name="ExportType" type="xs:integer" default="2" /> 
+                  <xs:element name="ExportAtNoon" type="xs:integer" default="1" />
+                  <xs:element name="ExportArchitecture" type="xs:integer" default="1" />
+                  <xs:element name="ExportWater" type="xs:integer" default="0" />
+                  <xs:element name="ExportABA" type="xs:integer" default="0" />
+                  <xs:element name="ExportCarbon" type="xs:integer" default="0" />
+                  <xs:element name="ExportResEq" type="xs:integer" default="0" />
+                  <xs:element name="StartExport" type="xs:integer" default="0" />
+                </xs:sequence>
+               </xs:complexType>
+              </xs:element>
+
+              <xs:element name ="Water">
+               <xs:complexType> 
+                <xs:sequence>
+                    <xs:element name="ResolveWater" type="xs:integer" default="0"/>
+                    <xs:element name="AllowHydrolicLift" type="xs:integer" default="0"/>
+                    <xs:element name="ResolveWaterType" type="xs:integer" default="1"/>
+                    <xs:element name="ResolveIteration" type="xs:integer" default="1"/>
+                    <xs:element name="ReWateringFrequence" type="xs:integer" default="500"/>
+                    <xs:element name="Aquaporines" type="xs:integer" default="0"/>
+                    <xs:element name="Cavitation" type="xs:integer" default="0"/>
+                    <xs:element name="Stomata" type="xs:integer" default="0"/>
+                    <xs:element name="StressType" type="xs:integer" default="1"/>
+                    <xs:element name="StartStress" type="xs:integer" default="0" />
+                    <xs:element name="RadialModifier" type="xs:float" default="1"/>
+                    <xs:element name="AxialModifier" type="xs:float" default="1"/>
+                    <xs:element name="SplitRoot" type="xs:integer" default="0"/>
+                    <xs:element name="SplitRootLimit" type="xs:integer" default="0"/>
+                    <xs:element name = "Regulation">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="StomataModifier" type="xs:float" default="0"/>
+                          <xs:element name="AQPModifier" type="xs:float" default="0"/>
+                          <xs:element name="CavitationModifier" type="xs:float" default="0"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+               </xs:complexType>
+              </xs:element>   
+
+              <xs:element name ="ABA">
+               <xs:complexType> 
+                <xs:sequence>
+                  <xs:element name="ABAProduction" type="xs:integer" default="0"/> 
+                  <xs:element name="ABATransport" type="xs:integer" default="0"/> 
+                </xs:sequence>
+               </xs:complexType>
+              </xs:element>
+
+              <xs:element name ="Carbon">
+               <xs:complexType> 
+                <xs:sequence>
+                  <xs:element name="ResolveCarbon" type="xs:integer" default="0"/> 
+                  <xs:element name="VariablePartitionning" type="xs:integer" default="0"/> 
+                  <xs:element name="RootToShootPartition" type="xs:float" default="0.6"/>
+                </xs:sequence>
+               </xs:complexType>
+              </xs:element>
+
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+ <!-- ROOT -->
+        <xs:element name ="Root">
+          <xs:complexType>
+            <xs:sequence>
+              <!-- GENERAL -->
+              <xs:element name="General">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="AdventiveRoots" type="xs:integer" default="1"/>
+                    <xs:element name="DiameterStochasticity" type="xs:integer" default="1" /> 
+                    <xs:element name="RootTortuosity" type="xs:float" default="0.1" />
+                    <xs:element name="RamificationLevel" type="xs:integer" default="1"/>
+                    <xs:element name="NumberOfSeminals" type="xs:integer" default="3"/>
+                    <xs:element name="SeminalAngleStochasticity" type="xs:integer" default="0"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+
+                <!-- DIAMETERS -->    
+              <xs:element name="Diameters">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="PrincipalInitDiameter" type="xs:float" default="0.06"/>
+                    <xs:element name="SeminalInitDiameter" type="xs:float" default="0.03"/>
+                    <xs:element name="CrownInitDiameter" type="xs:float" default="0.08"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+
+               <!-- MAXLENGTH -->     
+              <xs:element name="MaxLength">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="PrimaryMaxLength" type="xs:float" default="400"/>
+                    <xs:element name="SecondaryMaxLength" type="xs:float" default="50"/>
+                    <xs:element name="TertiaryMaxLength" type="xs:float" default="5"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>      
+          
+              <!-- INTERBRANCH -->    
+              <xs:element name="InterBranchDistances">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="PrimaryInterBranchDistance" type="xs:float" default="0.4"/>
+                    <xs:element name="SecondaryInterBranchDistance" type="xs:float" default="0.4"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+          
+               <!-- LAUZ -->    
+              <xs:element name="LAUZ">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="PrincipalLAUZ" type="xs:float" default="2"/>
+                    <xs:element name="SecondaryLAUZ" type="xs:float" default="2"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+                     
+              <!-- INSERTION ANGLES -->     
+              <xs:element name="InsertAngles">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="SecondaryInsertAngle" type="xs:float" default="1.5"/>
+                    <xs:element name="TertiaryInsertAngle" type="xs:float" default="1.0"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              
+              <!-- GRAVITROPISM -->     
+              <xs:element name="Gravitropisms">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="PrincipalRootGravitropism" type="xs:float" default="1"/>
+                    <xs:element name="SeminalRootGravitropism" type="xs:float" default="20"/>
+                    <xs:element name="SecondaryRootGravitropism" type="xs:float" default="20"/>
+                    <xs:element name="TertiaryRootGravitropism" type="xs:float" default="50"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

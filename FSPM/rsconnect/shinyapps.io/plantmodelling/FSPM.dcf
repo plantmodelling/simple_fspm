@@ -1,0 +1,13 @@
+name: FSPM
+title: FSPM
+username:
+account: plantmodelling
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 504642
+bundleId: 1634046
+url: https://plantmodelling.shinyapps.io/FSPM/
+when: 1539165505.94626
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: model/.DS_Store

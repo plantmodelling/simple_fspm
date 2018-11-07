@@ -1,0 +1,13 @@
+name: PlaNet_Maize
+title: PlaNet_Maize
+username:
+account: plantmodelling
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 507375
+bundleId: 1683838
+url: https://plantmodelling.shinyapps.io/PlaNet_Maize/
+when: 1541450565.63989
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: www/.DS_Store|www/maize.xsd|www/planet-5-0.9-carbon.csv|www/results-base|www/planetBatch/.classpath|www/planetBatch/.DS_Store|www/planetBatch/.gitignore|www/planetBatch/.project|www/planetBatch/arpack.jar|www/planetBatch/colt.jar|www/planetBatch/mtj.jar|www/planetBatch/netlib.jar|www/planetBatch/results.csv|www/planetBatch/vecmath.jar|www/planetBatch/workspace.xml|www/planetBatch/.settings/org.eclipse.core.resources.prefs|www/planetBatch/bin/maize.xml|www/planetBatch/bin/maize/Air.class|www/planetBatch/bin/maize/Article.class|www/planetBatch/bin/maize/ArtVirt.class|www/planetBatch/bin/maize/EndogenousEnvironment.class|www/planetBatch/bin/maize/ExogenousEnvironment.class|www/planetBatch/bin/maize/Exports.class|www/planetBatch/bin/maize/MerisLeaf.class|www/planetBatch/bin/maize/MerisRoot.class|www/planetBatch/bin/maize/MerisStem.class|www/planetBatch/bin/maize/Network.class|www/planetBatch/bin/maize/ParameterSet.class|www/planetBatch/bin/maize/Planet.class|www/planetBatch/bin/maize/SegLeaf.class|www/planetBatch/bin/maize/SegRoot.class|www/planetBatch/bin/maize/SegStem.class|www/planetBatch/bin/maize/Simulator.class|www/planetBatch/bin/maize/Simulator$Node.class|www/planetBatch/bin/maize/Soil.class|www/planetBatch/bin/maize/Solver.class|www/planetBatch/bin/maize/Solver$Node.class|www/planetBatch/bin/maize/SpaceTimeInfo.class|www/planetBatch/bin/maize/Time.class|www/planetBatch/bin/maize/Util.class|www/planetBatch/bin/maize/XPathParser.class|www/planetBatch/src/maize.xml|www/planetBatch/src/maize/Air.java|www/planetBatch/src/maize/Article.java|www/planetBatch/src/maize/ArtVirt.java|www/planetBatch/src/maize/EndogenousEnvironment.java|www/planetBatch/src/maize/ExogenousEnvironment.java|www/planetBatch/src/maize/Exports.java|www/planetBatch/src/maize/MerisLeaf.java|www/planetBatch/src/maize/MerisRoot.java|www/planetBatch/src/maize/MerisStem.java|www/planetBatch/src/maize/Network.java|www/planetBatch/src/maize/ParameterSet.java|www/planetBatch/src/maize/Planet.java|www/planetBatch/src/maize/SegLeaf.java|www/planetBatch/src/maize/SegRoot.java|www/planetBatch/src/maize/SegStem.java|www/planetBatch/src/maize/Simulator.java|www/planetBatch/src/maize/Soil.java|www/planetBatch/src/maize/Solver.java|www/planetBatch/src/maize/SpaceTimeInfo.java|www/planetBatch/src/maize/Time.java|www/planetBatch/src/maize/Util.java|www/planetBatch/src/maize/XPathParser.java
