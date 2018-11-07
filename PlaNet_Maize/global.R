@@ -1,29 +1,20 @@
-# Copyright © 2018, Université catholique de Louvain
-# All rights reserved.
+# Copyright (c) 2018 Forschungszentrum Jülich
+# Copyright (c) 2014-2018 UCLouvain
+# Copyright (c) 2014-2018 INRA-Avignon
 # 
-# Copyright © 2018 Forschungszentrum Jülich GmbH
-# All rights reserved.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 # 
-# Developers: Guillaume Lobet
+# http://www.apache.org/licenses/LICENSE-2.0
 # 
-# Redistribution and use in source and binary forms, with or without modification, are permitted under the GNU General Public License v3 and provided that the following conditions are met:
-#   
-#   1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-# 
-# 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-# 
-# 3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-# 
-# Disclaimer
-# 
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-# 
-# You should have received the GNU GENERAL PUBLIC LICENSE v3 with this file in license.txt but can also be found at http://www.gnu.org/licenses/gpl-3.0.en.html
-# 
-# NOTE: The GPL.v3 license requires that all derivative work is distributed under the same license. That means that if you use this source code in any other program, you can only distribute that program with the full source code included and licensed under a GPL license.
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 
-# install.packages("BioCro", repos="http://R-Forge.R-project.org")
 # //////////////////////////////////////////
 # Libraries
 # //////////////////////////////////////////
@@ -48,11 +39,24 @@ organ_types <- c("primary root", "lateral root", "stem", "nodal root", "leaf", "
 organ_class <- c("root", "shoot")
 
 axis_names <- data.frame(id = c("surface", "length", "drymass", 
-                                "photosynthesis", "demand", "growth_eff"),
+                                "photosynthesis", "demand", "growth_eff",
+                                "water_pot_endo","water_pot_endo","radial_water_flux","stomata_openning","aqp","cavitation"),
                          text = c("Surface [cm2]", "Length [cm]", "Dry biomass [g]",
-                                  "Photosynthesis [g CO2]", "Carbon demand [CO2]", "Growth efficiency [-]"))
-
-
+                                  "Photosynthesis [g CO2]", "Carbon demand [CO2]", "Growth efficiency [-]",
+                                  "Mean endogeneous water potential [MPa]","Mean exogeneous water potential [MPa]","Radial water flux [g H₂O]",
+                                  "Relative stomata openning [-]","Relative aquaporin activity [-]","Relative cavitation [-]"),
+                         descr = c("Evolution of the organ surface.\nImportant for the acquisition processes",
+                                   "Evolution of the organ length.\nImportant for the exploration of the environment",
+                                   "Evolution of the organ dry biomass.\nImportant for the carbon demand",
+                                   "Photosynthesis [g CO2]", 
+                                   "Carbon demand [CO2]", 
+                                   "Growth efficiency [-]",
+                                   "Evolution of the water potential [MPa] at the plant collar\nIndication of the water sense by the plant.\nBelow 1.5 MPa = stress",
+                                   "Mean exogeneous water potential [MPa]",
+                                   "Radial water flux [g H₂O]",
+                                   "Relative stomata openning [-]",
+                                   "Relative aquaporin activity [-]",
+                                   "Relative cavitation [-]"))
 
 # Function to update the XML file
 updateXML <- function(value, name, xml){

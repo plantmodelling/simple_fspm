@@ -1,26 +1,18 @@
-# Copyright © 2018, Université catholique de Louvain
-# All rights reserved.
+# Copyright (c) 2018 Forschungszentrum Jülich
+# Copyright (c) 2014-2018 UCLouvain
+# Copyright (c) 2014-2018 INRA-Avignon
 # 
-# Copyright © 2018 Forschungszentrum Jülich GmbH
-# All rights reserved.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 # 
-# Developers: Guillaume Lobet
+# http://www.apache.org/licenses/LICENSE-2.0
 # 
-# Redistribution and use in source and binary forms, with or without modification, are permitted under the GNU General Public License v3 and provided that the following conditions are met:
-#   
-#   1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-# 
-# 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-# 
-# 3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-# 
-# Disclaimer
-# 
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-# 
-# You should have received the GNU GENERAL PUBLIC LICENSE v3 with this file in license.txt but can also be found at http://www.gnu.org/licenses/gpl-3.0.en.html
-# 
-# NOTE: The GPL.v3 license requires that all derivative work is distributed under the same license. That means that if you use this source code in any other program, you can only distribute that program with the full source code included and licensed under a GPL license.
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 
 library(shiny)
@@ -48,7 +40,7 @@ shinyServer(
         xml <- xmlParse("www/maize.xml")
         xml <- updateParameters(xml, input)  # Update the simulation parameters
         saveXML(xml, file='www/current_maize.xml') # Store the update XML 
-        # system("java -Xmx6000m -jar www/planet.jar www/current_maize.xml")
+        system("java -Xmx6000m -jar www/planet.jar www/current_maize.xml")
         data <- fread("www/results.csv")
         data <- updateNames(data)
         data$sim <- 0
@@ -86,22 +78,10 @@ shinyServer(
         xlab("Time [hours]")
     })
     
+    
+    # Plot Carbon related variables
     output$evolCarbonPlot <- renderPlot({
       if(is.null(rs$data)){return(NULL)}
-      
-      # temp <- ddply(rs$data, .(sim, temps, organ), summarise, 
-      #               photosynthesis = sum(photosynthesis[organ == "shoot"]),
-      #               growth_eff = mean(growth_eff),
-      #               demand = sum(growth_demand + maintenance_demand)
-      #               )
-      # 
-      # temp %>%
-      #   gather(key=var, value=value, -c(sim,temps,organ)) %>% 
-      #   ggplot(aes(temps, value, lty=organ, colour=factor(sim))) +
-      #   geom_line() + 
-      #   facet_wrap(~var, scales="free", ncol = 2) + 
-      #   geom_vline(xintercept = (input$time_to_plot), lty=2) +
-      #   xlab("Time [hours]")
       
       if(input$plot_organ_c){
         temp <- ddply(rs$data, .(sim, temps, organ), summarise, 
@@ -131,11 +111,14 @@ shinyServer(
         # facet_wrap(~var, scales="free", ncol = 2) + 
         geom_vline(xintercept = (input$time_to_plot), lty=2) +
         xlab("Time [hours]") + 
-        ylab(axis_names$text[axis_names$id == input$plot_carbon])
+        ylab(axis_names$text[axis_names$id == input$plot_carbon])+
+        ggtitle(axis_names$text[axis_names$id == input$plot_carbon])+ 
+        labs(caption=axis_names$descr[axis_names$id == input$plot_carbon])
       
       
     })
         
+    # Plot water related variables
     output$evolWaterPlot <- renderPlot({
       if(is.null(rs$data)){return(NULL)}
       
@@ -150,13 +133,19 @@ shinyServer(
       temp %>%
         gather(key=var, value=value, -c(sim,temps,organ)) %>% 
         filter(organ %in% input$plot_organ_water) %>% 
+        filter(var == input$plot_water) %>% 
         ggplot(aes(temps, value, lty=organ, colour=factor(sim))) +
         geom_line() + 
-        facet_wrap(~var, scales="free", ncol = 2) + 
+        # facet_wrap(~var, scales="free", ncol = 2) + 
         geom_vline(xintercept = (input$time_to_plot), lty=2) +
-        xlab("Time [hours]")
+        xlab("Time [hours]") + 
+        ylab(axis_names$text[axis_names$id == input$plot_water])+
+        ggtitle(axis_names$text[axis_names$id == input$plot_water]) + 
+        labs(caption=axis_names$descr[axis_names$id == input$plot_water])
     })
     
+    
+    # Plot architecture related variables
     output$evolArchiPlot <- renderPlot({
       if(is.null(rs$data)){return(NULL)}
 
@@ -185,7 +174,9 @@ shinyServer(
         # facet_wrap(~var, scales="free", ncol = 2) + 
         geom_vline(xintercept = (input$time_to_plot), lty=2) +
         xlab("Time [hours]") + 
-        ylab(axis_names$text[axis_names$id == input$plot_archi])
+        ylab(axis_names$text[axis_names$id == input$plot_archi])+
+        ggtitle(axis_names$text[axis_names$id == input$plot_archi])+ 
+        labs(caption=axis_names$descr[axis_names$id == input$plot_archi])
     })
         
     
