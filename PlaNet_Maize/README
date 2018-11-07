@@ -1,0 +1,6 @@
+# PlaNet-Maize - Shiny app  
+
+
+This is a shiny app tu run the PlaNet-Maize model, and play with the parameters. 
+
+The model is accessible here: [https://plantmodelling.shinyapps.io/PlaNet_Maize/]()
