@@ -332,22 +332,31 @@ ui <- dashboardPage(
                 title = "How to cite PlaNet-Maize",  solidHeader = TRUE, width = 6, status = "warning",
                 tags$strong("A modeling approach to determine the importance of dynamic regulation of plant hydraulic conductivities on the water uptake dynamics in the soil-plant-atmosphere system (2014)"),
                 helpText("Lobet G, Pagès P, Draye X"),
-                actionButton(inputId='ab1', label="View paper", icon = icon("flask"), onclick ="window.open('http://dx.doi.org/10.1016/j.ecolmodel.2013.11.025', '_blank')")
+                actionButton(inputId='ab1', label="View paper", icon = icon("flask"), onclick ="window.open('http://dx.doi.org/10.1016/j.ecolmodel.2013.11.025', '_blank')"),
+                actionButton(inputId='ab1', label="Access PDF", icon = icon("flask"), onclick ="window.open('https://paperpile.com/shared/O9L43X', '_blank')")
+                
               ),
               
               
               box(
                 title = "MIT Licence",
-                helpText("Planet-Maize-Shiny is released under a MIT licence."),
+                helpText("Planet-Maize-Shiny is released under a Apache licence."),
                 helpText("
-The MIT License (MIT)
-
 Copyright (c) 2018 Forschungszentrum Jülich
-Copyright (c) 2018 UClouvain
+Copyright (c) 2014-2018 UCLouvain
+Copyright (c) 2014-2018 INRA-Avignon
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+Licensed under the Apache License, Version 2.0 (the 'License'');
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.")
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an 'AS IS' BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.")
               ),
               box(
                 title =  "Disclaimer",
