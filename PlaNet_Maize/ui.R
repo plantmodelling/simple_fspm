@@ -79,7 +79,7 @@ ui <- dashboardPage(
       downloadButton("download_current", "Current simulation"),tags$br(),
       downloadButton("download_all", "All simulations"),
       tags$hr(),
-      actionButton(inputId='ab13', label="Report a bug", icon = icon("bug"), onclick ="window.open('#', '_blank')", style="color: #fff; background-color: #d83429; border-color: #d83429"))
+      actionButton(inputId='ab13', label="Report a bug", icon = icon("bug"), onclick ="window.open('https://github.com/plantmodelling/simple_fspm/issues', '_blank')", style="color: #fff; background-color: #d83429; border-color: #d83429"))
       
   ),
   
@@ -324,7 +324,7 @@ ui <- dashboardPage(
                 helpText("This web interface only display basic capabilities of PlaNet-Maize, mainly for teaching purposes."),
                 tags$hr(),
                 helpText("The code of this web app is open source and available here:"),
-                actionButton(inputId='ab1', label="Source code", icon = icon("th"), onclick ="window.open('#', '_blank')")
+                actionButton(inputId='ab1', label="Source code", icon = icon("th"), onclick ="window.open('https://github.com/plantmodelling/simple_fspm', '_blank')")
                 ),
               
               
