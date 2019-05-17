@@ -57,18 +57,12 @@ ui <- dashboardPage(
       
       menuItem("Tutorial", tabName = "tutorial", icon = icon("flask")),
       menuItem("About", tabName = "about", icon = icon("question-circle")),
+
       tags$hr(),
-      actionButton(inputId = "runSim", label="Run model", icon("rocket"), style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
-      actionButton(inputId = "resetSim", label="Reset simulations", icon("warning"), style="color: #fff; background-color: #f38f18; border-color: #bc6f14"),
       
-      tags$hr(),
-      h4("Download results"),
-      downloadButton("download_current", "Current simulation"),tags$br(),
-      downloadButton("download_all", "All simulations"),
-      tags$hr(),
-      actionButton(inputId='ab13', label="Report a bug", icon = icon("bug"), onclick ="window.open('https://github.com/plantmodelling/simple_fspm/issues', '_blank')", style="color: #fff; background-color: #d83429; border-color: #d83429"))
+      actionButton(inputId='ab13', label="Report a bug", icon = icon("bug"), onclick ="window.open('https://github.com/plantmodelling/simple_fspm/issues', '_blank')", style="color: #fff; background-color: #d83429; border-color: #d83429")
       
-  ),
+  )),
   
   
   #----- BODY
@@ -76,116 +70,171 @@ ui <- dashboardPage(
     tabItems(
       # Water tab content
       tabItem(tabName = "results",
-              fluidRow(
+            fluidRow(
+              column(width = 6,
+                     
                 box(
-                  status = "success",  solidHeader = TRUE, title = "View plant architecture [last 2 simulations]",
+                  status = "success",  width = NULL,solidHeader = TRUE, title = "Command center",
                   
-                  dropdownButton(
-                    label = "Setup",
-                    icon = icon("sliders"),
-                    status = "info",
-                    circle = TRUE,
-                    materialSwitch("plot3D", "3D plot ?", status = "primary", right = TRUE, value = FALSE),
-                    sliderInput("time_to_plot", "Time to plot", min=1, max=14, value=10),
-                    selectInput("plot_color", "Variable to color", choices = c("Root type" = "name",
-                                                                               "Organ type" = "organ",
-                                                                               "Age" = "article_age",
-                                                                               "Simulation" = "sim",
-                                                                               "Radial water flux" = "radial_water_flux",
-                                                                               "Water potential" = "water_pot_endo",
-                                                                               "Growth efficiency" = "growth_eff"))
-                    
-                  ),
+                  actionButton(inputId = "runSim", label="Run model", icon("rocket"), style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
                   
-                  # checkboxInput("plot3D", "3D plot ?", value=F),
-                  # sliderInput("time_to_plot", "Time to plot", min=1, max=14, value=10),
+                  actionButton(inputId = "resetSim", label="Reset simulations", icon("warning"), style="color: #fff; background-color: #f38f18; border-color: #bc6f14"),
                   
-                  conditionalPanel(
-                    condition = "input.plot3D == true",
-                    plotlyOutput("archiPlot3D", height = "800px")
-                  ),
-                  
-                  conditionalPanel(
-                    condition = "input.plot3D == false",
-                    plotOutput("archiPlot", height = "800px")
-                  )
+                  tags$hr(),
+                  downloadButton("download_current", "Current simulation"),
+                  downloadButton("download_all", "All simulations")
+
                 ),
-                
+              
                 
                 
                 tabBox(
                   # Title can include an icon
-                  title = tagList(shiny::icon("gear"), "Parameters"),
+                  title = tagList(shiny::icon("gear"), "Parameters"), width = NULL,
                   tabPanel("General",
-                           helper(sliderInput("TotalTime", "Simulation time [h]", 100, 400, 300, step = 50), 
-                             icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "TotalTime", size = "m")#,
+                           helper(sliderInput("TotalTime", "Simulation time [h]", 100, 600, 300, step = 1), 
+                                  icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "TotalTime", size = "m")#,
                            
                   ),
                   tabPanel("Carbon",
                            
                            helper(materialSwitch(inputId = "ResolveCarbon", label = "Solve carbon fluxes", status = "success", right = TRUE, value = TRUE), icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "ResolveCarbon", size = "m"),
-                           
+
                            bsCollapse(multiple = FALSE, open = "col1", id = "collapse1",
-                                bsCollapsePanel("Environment", 
-                                    helper(sliderInput("maxPAR", "Photosynthetic active radiation [µmol/m2/sec]", 160, 600, 300, step = 20),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "maxPAR", size = "m"),
-                                    helper(sliderInput("maxTemperature", "Temperature [°C]", 10, 30, 20, step = 1),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "maxTemperature", size = "m")
-                                    ),
-                                
-                                bsCollapsePanel("Physiology", 
-                                    helper(sliderInput("RootToShootPartition", "Root / Shoot carbon partitioning", 0.1, 0.9, 0.6, step = 0.1),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "RootToShootPartition", size = "m"),
-                                    helper(sliderInput("VMax", "V_Max", 1, 150, 50, step = 1),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "V_Max", size = "m"),
-                                    helper(sliderInput("JMax", "J_Max", 1, 300, 100, step = 1),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "J_Max", size = "m"), 
-                                    helper(sliderInput("Aerenchyma", "Proportion of aerenchyma", 0, 0.9, 0, step = 0.05),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "Aerenchyma", size = "m") 
-                                    ),
+                                      bsCollapsePanel("Environment", 
+                                                      helper(sliderInput("maxPAR", "Photosynthetic active radiation [µmol/m2/sec]", 10, 1000, 500, step = 2),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "maxPAR", size = "m"),
+                                                      helper(sliderInput("maxPAR2", "Photosynthetic active radiation 2 [µmol/m2/sec]", 10, 1000, 500, step = 2),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "maxPAR", size = "m"),
+
+                                                      helper(sliderInput("switchPAR", "Time to switch between PAR1 and PAR2 [h]", 10, 600, 600, step = 2),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "switchPAR", size = "m"),
+                                                      helper(sliderInput("maxTemperature", "Temperature [°C]", 10, 30, 20, step = 1),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "maxTemperature", size = "m")
+                                      ),
                                       
-                                  bsCollapsePanel("Root architecture", 
-                                                  
-                                    helper(sliderInput("NumberOfSeminals", "Number of seminal roots", 0, 6, 1, step = 1),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "NumberOfSeminals", size = "m"),
-                                    helper(sliderInput("PrimaryInterBranchDistance", "Distance between two laterals [cm]", 0.1, 2, 1.5, step = 0.1),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "PrimaryInterBranchDistance", size = "m"),
-                                    
-                                    helper(sliderInput("SecondaryMaxLength", "Maximal length of lateral roots [cm]", 1, 15, 3, step = 1), icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "SecondaryMaxLength", size = "m")
-                                    ),
+                                      bsCollapsePanel("Physiology", 
+                                                      helper(sliderInput("RootToShootPartition", "Root / Shoot carbon partitioning", 0.1, 0.9, 0.6, step = 0.1),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "RootToShootPartition", size = "m"),
+                                                      helper(sliderInput("VMax", "V_Max", 1, 150, 50, step = 1),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "V_Max", size = "m"),
+                                                      helper(sliderInput("JMax", "J_Max", 1, 300, 100, step = 1),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "J_Max", size = "m"), 
+                                                      helper(sliderInput("Aerenchyma", "Proportion of aerenchyma", 0, 0.9, 0, step = 0.05),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "Aerenchyma", size = "m") 
+                                      ),
                                       
-                                bsCollapsePanel("Shoot architecture", 
-                                    helper(sliderInput("LeafGrowthRate", "Leaf growth rate [cm/°D]", 0.6, 1.2, 0.6, step = 0.1),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "LeafGrowthRate", size = "m"),
-                                    helper(sliderInput("LeafApparitionRate", "Leaf apparition rate [-]", 0.1, 2, 1, step = 0.1),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "LeafApparitionRate", size = "m")
-                                    )
+                                      bsCollapsePanel("Root architecture", 
+                                                      
+                                                      helper(sliderInput("NumberOfSeminals", "Number of seminal roots", 0, 6, 3, step = 1),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "NumberOfSeminals", size = "m"),
+                                                      helper(sliderInput("PrimaryInterBranchDistance", "Distance between two laterals [cm]", 0.1, 2, 1.5, step = 0.1),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "PrimaryInterBranchDistance", size = "m"),
+                                                      
+                                                      helper(sliderInput("SecondaryMaxLength", "Maximal length of lateral roots [cm]", 1, 15, 3, step = 1), icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "SecondaryMaxLength", size = "m")
+                                      ),
+                                      
+                                      bsCollapsePanel("Shoot architecture", 
+                                                      helper(sliderInput("LeafGrowthRate", "Leaf growth rate [cm/°D]", 0.6, 1.2, 0.6, step = 0.1),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "LeafGrowthRate", size = "m"),
+                                                      helper(sliderInput("LeafApparitionRate", "Leaf apparition rate [-]", 0.1, 2, 1, step = 0.1),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "LeafApparitionRate", size = "m")
+                                      )
                            )                            
                   ),
                   
                   
                   
                   tabPanel("Water",
-                     helper(materialSwitch(inputId = "ResolveWater", label = "Solve water fluxes", status = "primary", right = TRUE, value = FALSE),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "ResolveWater", size = "m"),
-                     
-                     bsCollapse(multiple = FALSE, open = "col1", id = "collapse1",
-                                
-                        bsCollapsePanel("Environment", 
-                            helper(selectInput("StressType", "Stress type", choices = c("None" = 0, "Gradual drying" = 11)), icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "StressType", size = "m"),
-                            
-                            helper(sliderInput("StartStress", "Stress start [h]", 0, 400, 0, step = 20),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "StartStress", size = "m"),
-                            
-                            helper(sliderInput("ReWateringFrequence", "Rewatering start [h]", 0, 400, 400, step = 20),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "ReWateringFrequence", size = "m")
-                        ),
-                        
-                        bsCollapsePanel("Physiology",            
-                   
-                           helper(sliderInput("RadialModifier", "Root radial conductivity [-]", 0.1, 10, 1, step = 0.1),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "RadialModifier", size = "m"),
-        
-                           helper(sliderInput("AxialModifier", "Root axial conductivity  [-]", 0.1, 10, 1, step = 0.1),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "AxialModifier", size = "m"),
-        
-                           helper(materialSwitch(inputId = "HydraulicRegulation", label = "Hydraulic regulation of the plant",status = "success", right = TRUE, value = TRUE),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "AxialModifier", size = "m")
-                        )
-                     )
+                           helper(materialSwitch(inputId = "ResolveWater", label = "Solve water fluxes", status = "primary", right = TRUE, value = TRUE),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "ResolveWater", size = "m"),
+                           
+                           bsCollapse(multiple = FALSE, open = "col2", id = "collapse2",
+                                      
+                                      bsCollapsePanel("Environment", 
+                                                      helper(sliderInput("WaterPotInit", "Initial soil water potential [MPa]", 0, 2.5, 0.15, step = 0.05), icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "WaterPotInit", size = "m"),
 
+                                                      helper(selectInput("StressType", "Stress type", choices = c("None" = 0, "Gradual drying" = 11, "Drying cycles" = 12)), icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "StressType", size = "m"),
+                                                      
+                                                      conditionalPanel(
+                                                        condition = "input.StressType >= 11",
+                                                        helper(sliderInput("StartStress", "Stress start [h]", 0, 400, 0, step = 20),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "StartStress", size = "m")
+                                                      ),
+                                                      conditionalPanel(
+                                                        condition = "input.StressType == 11",
+                                                      helper(sliderInput("ReWateringFrequence", "Rewatering start [h]", 0, 400, 400, step = 20),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "ReWateringFrequence", size = "m")
+                                                      ),
+                                                      conditionalPanel(
+                                                        condition = "input.StressType == 12",
 
+                                                        helper(sliderInput("WateringFrequence", "Rewatering frequence [h]", 0, 400, 170, step = 20),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "WateringFrequence", size = "m")
+                                                      )
+                                      ),
+                                      
+                                      bsCollapsePanel("Physiology",            
+                                                      
+                                                      helper(sliderInput("RadialModifier", "Root radial conductivity [-]", 0.1, 10, 1, step = 0.1),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "RadialModifier", size = "m"),
+                                                      
+                                                      helper(sliderInput("AxialModifier", "Root axial conductivity  [-]", 0.1, 10, 1, step = 0.1),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "AxialModifier", size = "m")#,
+                                                      
+                                                      # helper(materialSwitch(inputId = "HydraulicRegulation", label = "Hydraulic regulation of the plant",status = "success", right = TRUE, value = TRUE),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "AxialModifier", size = "m")
+                                      )
+                           )
+                           
+                           
+                  ),
+                  
+                  tabPanel("Nitrogen",
+                           
+                           helper(materialSwitch(inputId = "ResolveNitrogen", label = "Solve Nitrogen fluxes", status = "success", right = TRUE, value = TRUE), icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "ResolveNitrogen", size = "m"),
+                           
+                           bsCollapse(multiple = FALSE, open = "col3", id = "collapse3",
+                                      
+                                      bsCollapsePanel("Physiology",
+                                         helper(sliderInput("Km", "Km parameter [-]", 0.01, 0.05, 0.04, step = 0.001),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "Km", size = "m"),
+
+                                         helper(sliderInput("IMax", "Imax [-]", 0.001, 0.05, 0.02, step = 0.001),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "IMax", size = "m"),
+                                      
+                                         helper(sliderInput("Knu", "Knu [-]", 0.001, 0.01, 0.004, step = 0.001),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "Knu", size = "m")
+                                      ),   
+                                      bsCollapsePanel("Environment",
+                                         helper(sliderInput("NitrogenInit", "Initial nitrogen content [mmol]", 0.01, 1, 0.05, step = 0.005),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "NitrogenInit", size = "m")
+                                      )
+                           )
+                           
                   )
-                ),
+                )
+
+              ),
                 
+                
+              column(width = 6,
+
                 
                 tabBox(
                   # Title can include an icon
-                  title = tagList(shiny::icon("leaf"), "Results"),
+                  title = tagList(shiny::icon("leaf"), "Results"),width = NULL,
+                  
+                  tabPanel(
+                    "Plant",
+                    dropdownButton(
+                      label = "Setup",
+                      icon = icon("sliders"),
+                      status = "info",
+                      circle = TRUE,
+                      materialSwitch("plot3D", "3D plot ?", status = "primary", right = TRUE, value = FALSE),
+                      sliderInput("time_to_plot", "Time to plot", min=1, max=14, value=10),
+                      selectInput("plot_color", "Variable to color", choices = c("Root type" = "name",
+                                                                                 "Organ type" = "organ",
+                                                                                 "Age" = "article_age",
+                                                                                 "Simulation" = "sim",
+                                                                                 "Radial water flux" = "radial_water_flux",
+                                                                                 "Water potential" = "water_pot_endo",
+                                                                                 "Growth efficiency" = "growth_eff"))
+                      
+                    ),
+                    
+                    # checkboxInput("plot3D", "3D plot ?", value=F),
+                    # sliderInput("time_to_plot", "Time to plot", min=1, max=14, value=10),
+                    
+                    conditionalPanel(
+                      condition = "input.plot3D == true",
+                      plotlyOutput("archiPlot3D", height = "800px")
+                    ),
+                    
+                    conditionalPanel(
+                      condition = "input.plot3D == false",
+                      plotOutput("archiPlot", height = "800px")
+                    )
+                    
+                  ),
                   
                   # Plot the architectural results
                   tabPanel("Architecture",
@@ -253,9 +302,9 @@ ui <- dashboardPage(
                              circle = FALSE,
                             selectInput("plot_organ_water", "Organ to plot", multiple = T,  choices = organ_class, selected = organ_class),
                             selectInput("plot_water", "Variable to plot", multiple = F,  
-                                        choices = c("Mean endogeneous water potential [MPa]" = "water_pot_endo",
+                                        choices = c("Radial water flux [g H₂O]" = "radial_water_flux",
+                                                    "Mean endogeneous water potential [MPa]" = "water_pot_endo",
                                                     "Mean exogeneous water potential [MPa]" = "water_pot_endo",
-                                                    "Radial water flux [g H₂O]" = "radial_water_flux",
                                                     "Relative stomata openning [-]" = "stomata_openning",
                                                     "Relative aquaporin activity [-]" = "aqp",
                                                     "Relative cavitation [-]" = "cavitation"), selected = 1)
@@ -263,16 +312,49 @@ ui <- dashboardPage(
                            ),
                            # tags$hr,
                            plotOutput("evolWaterPlot")
-                  )#,
+                  ),
+                  
+                  tabPanel("Nitrogen",
+                           dropdownButton(
+                             label = "",
+                             icon = icon("sliders"),
+                             status = "info",
+                             circle = FALSE,
+                             selectInput("plot_nitrogen", "Variable to plot", multiple = F,  
+                                         choices = c("Nitrogen Uptake [MPa]" = "n_uptake",
+                                                     "Nitrogen satisfaction [MPa]" = "n_satis"), selected = 1)
+                             
+                           ),
+                           # tags$hr,
+                           plotOutput("evolNitroPlot")
+                  ),
                   
 
-                  # tabPanel("Environment",
-                  #          # tags$hr,
-                  #          plotOutput("evolEnviPlot", height = "600px")
-                  # )
+                  tabPanel("Environment",
+                           # tags$hr,
+                           dropdownButton(
+                             label = "",
+                             icon = icon("sliders"),
+                             status = "info",
+                             circle = FALSE,
+                             selectInput("plot_envi", "Variable to plot", multiple = F,  
+                                         choices = c("Soil water profile" = "1",
+                                                     "Soil water evolution" = "2"), selected = 1)
+                             
+                           ),
+                           conditionalPanel(
+                             condition = "input.plot_envi == 1",
+                             plotOutput("evolEnviPlot", height = "600px")
+                           ),
+                           conditionalPanel(
+                             condition = "input.plot_envi == 2",
+                             plotOutput("evolWaterEnviPlot", height = "600px")
+                           )
+                  )
                 )
       
               )
+            )
       ),
       
       # View plant parameters
@@ -280,7 +362,7 @@ ui <- dashboardPage(
               fluidRow(
                 box(
                   status = "success", title = "How to use the interface", width=12,
-                  tags$iframe(src = "https://www.youtube.com/embed/urQRxmFWiZ8", width="560", height="315")
+                  tags$iframe(src = "https://www.youtube.com/embed/O8Lo6UT9kC0", width="560", height="315")
                 )
               )
       ),
@@ -336,9 +418,7 @@ limitations under the License.")
               )
             )
         )
-      
-      
-      
+
     )
   )
 )

@@ -1,9 +1,9 @@
 
 
-## Test file
+### Stress type
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Type of water stress to impose to the plant.
 
-- test
-- test
+- **None** = soil water potential is kept constant at the value defined by the *Initial soil water potential* parameter. 
+- **Gradual drying** = soil water potential decrease at the time define by *Stress start* parameter. Soil can be rewatered (back to the original value) at the time set by the *Rewatering start* parameter.
 

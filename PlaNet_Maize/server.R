@@ -75,7 +75,8 @@ shinyServer(
         coord_flip() + 
         geom_line() + 
         facet_wrap(~sim, ncol = 2) +
-        xlab("Time [hours]")
+        xlab("Depth [cm]") + 
+        ylab("Soil water content [MPa]") 
     })
     
     
@@ -118,6 +119,25 @@ shinyServer(
       
     })
         
+    # Plot architecture related variables
+    output$evolWaterEnviPlot <- renderPlot({
+      if(is.null(rs$data)){return(NULL)}
+      
+       temp <- rs$data %>% 
+         filter(z < 0 & z > -5) %>% 
+         ddply( .(sim, temps, organ), summarise, 
+                      value = mean(water_pot_exo))
+        pl <- temp %>%
+          ggplot(aes(temps, value, colour=factor(sim)))
+      
+      pl + geom_line() + 
+        # facet_wrap(~var, scales="free", ncol = 2) + 
+        geom_vline(xintercept = (input$time_to_plot), lty=2) +
+        xlab("Time [hours]") + 
+        ylab("Water potential in top soil layer [MPa]")+
+        ggtitle("Water potential in top soil layer [MPa]")
+    })
+    
     # Plot water related variables
     output$evolWaterPlot <- renderPlot({
       if(is.null(rs$data)){return(NULL)}
@@ -142,6 +162,28 @@ shinyServer(
         ylab(axis_names$text[axis_names$id == input$plot_water])+
         ggtitle(axis_names$text[axis_names$id == input$plot_water]) + 
         labs(caption=axis_names$descr[axis_names$id == input$plot_water])
+    })
+    
+    
+    # Plot water related variables
+    output$evolNitroPlot <- renderPlot({
+      if(is.null(rs$data)){return(NULL)}
+      
+      temp <- ddply(rs$data, .(sim, temps, organ), summarise,
+                    n_uptake = sum(n_uptake[organ == "root" & z < -5]),
+                    n_satis = mean(n_satis[organ == "root" & z < -5]))
+      
+      temp %>%
+        gather(key=var, value=value, -c(sim,temps,organ)) %>% 
+        filter(var == input$plot_nitrogen) %>% 
+        ggplot(aes(temps, value, lty=organ, colour=factor(sim))) +
+        geom_line() + 
+        # facet_wrap(~var, scales="free", ncol = 2) + 
+        geom_vline(xintercept = (input$time_to_plot), lty=2) +
+        xlab("Time [hours]") + 
+        ylab(axis_names$text[axis_names$id == input$plot_nitrogen])+
+        ggtitle(axis_names$text[axis_names$id == input$plot_nitrogen]) + 
+        labs(caption=axis_names$descr[axis_names$id == input$plot_nitrogen])
     })
     
     
@@ -275,8 +317,15 @@ shinyServer(
       data1 <- updateNames(data1) # Update the root type names
       print("Loading data done")
       rs$data <- rbind(rs$data, data1)
-      sendSweetAlert(session, title = "Simulation done!", text = NULL, type = "success",
-                     btn_labels = "Ok", html = FALSE, closeOnClickOutside = TRUE)
+      
+      print(nrow(data1) )
+      if(nrow(data1) < (input$TotalTime*7)){
+        sendSweetAlert(session, title = "Your plant died!", text = NULL, type = "error",
+                       btn_labels = "Ok", html = FALSE, closeOnClickOutside = TRUE)
+      }else{
+        sendSweetAlert(session, title = "Simulation done!", text = NULL, type = "success",
+                       btn_labels = "Ok", html = FALSE, closeOnClickOutside = TRUE)
+      }
     })
     
     

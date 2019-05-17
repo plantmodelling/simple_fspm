@@ -24,11 +24,13 @@
                      <ResolveWaterType>1</ResolveWaterType>
                      <ResolveIteration>1</ResolveIteration>
                      <ReWateringFrequence>5000</ReWateringFrequence>
+                     <WateringFrequence>170</WateringFrequence>
                      <Aquaporines>1</Aquaporines>
                      <Cavitation>1</Cavitation>
                      <Stomata>1</Stomata>
                      <StressType>0</StressType>
                      <StartStress>0</StartStress>
+                     <WaterPotInit>-0.15</WaterPotInit>
                      <RadialModifier>1</RadialModifier>
                      <AxialModifier>1</AxialModifier>
                      <SplitRoot>0</SplitRoot>
@@ -48,11 +50,20 @@
                      <VariablePartitionning>0</VariablePartitionning>
                      <RootToShootPartition>0.6</RootToShootPartition>
                      <maxPAR>400</maxPAR>
+                     <maxPAR2>400</maxPAR2>
+                     <switchPAR>400</switchPAR>
                      <maxTemperature>20</maxTemperature>
                      <JMax>100</JMax>
                      <VMax>50</VMax>
                      <Aerenchyma>0</Aerenchyma>
                </Carbon>
+               <Nitrogen>
+                     <ResolveNitrogen>1</ResolveNitrogen>
+                     <Km>0.025</Km>
+                     <Knu>0.0043</Knu>
+                     <IMax>0.1</IMax>
+                     <NitrogenInit>0.5</NitrogenInit>
+               </Nitrogen>
          </Options>
          <Shoot>
          	     <Leaf>

@@ -40,23 +40,61 @@ organ_class <- c("root", "shoot")
 
 axis_names <- data.frame(id = c("surface", "length", "drymass", 
                                 "photosynthesis", "demand", "growth_eff",
-                                "water_pot_endo","water_pot_endo","radial_water_flux","stomata_openning","aqp","cavitation"),
-                         text = c("Surface [cm2]", "Length [cm]", "Dry biomass [g]",
+                                "water_pot_endo","water_pot_endo","radial_water_flux","stomata_openning","aqp","cavitation",
+                                "n_uptake", "n_satis"),
+                         
+                          text = c("Surface [cm2]", "Length [cm]", "Dry biomass [g]",
                                   "Photosynthesis [g CO2]", "Carbon demand [CO2]", "Growth efficiency [-]",
                                   "Mean endogeneous water potential [MPa]","Mean exogeneous water potential [MPa]","Radial water flux [g H₂O]",
-                                  "Relative stomata openning [-]","Relative aquaporin activity [-]","Relative cavitation [-]"),
-                         descr = c("Evolution of the organ surface.\nImportant for the acquisition processes",
-                                   "Evolution of the organ length.\nImportant for the exploration of the environment",
-                                   "Evolution of the organ dry biomass.\nImportant for the carbon demand",
-                                   "Photosynthesis [g CO2]", 
-                                   "Carbon demand [CO2]", 
-                                   "Growth efficiency [-]",
-                                   "Evolution of the water potential [MPa] at the plant collar\nIndication of the water sense by the plant.\nBelow 1.5 MPa = stress",
-                                   "Mean exogeneous water potential [MPa]",
-                                   "Radial water flux [g H₂O]",
-                                   "Relative stomata openning [-]",
-                                   "Relative aquaporin activity [-]",
-                                   "Relative cavitation [-]"))
+                                  "Relative stomata openning [-]","Relative aquaporin activity [-]","Relative cavitation [-]",
+                                  "Nitrogen uptake", "Nitrogen satisfaction coefficient"),
+                         
+                          descr = c("\n Evolution of the organ surface.\n
+                                   Important for the acquisition processes",
+                                   
+                                   "\n Evolution of the organ length.\n
+                                   Important for the exploration of the environment",
+                                   
+                                   "\n Evolution of the organ dry biomass.\n
+                                   Important for the carbon demand",
+                                   
+                                   "\n Evolution of the total photosynthesis of the plant. \n
+                                   Obviously 0 for the roots", 
+                                   
+                                   "\n Evolution of the total carbon demand for each organ.\n
+                                   This is the sum of maintenance and growth demand. ", 
+                                   
+                                   "\n Evolution of the growth efficiency of each organs. \n
+                                   Values <1 means the growth was not completelly satisfied by the C supply.\n 
+                                   As a result the organ growth was reduced",
+                                   
+                                   "\n Evolution of the water potential [MPa] at the plant collar.\n
+                                   Indication of the water sense by the plant.\n
+                                   Below 1.5 MPa = stress",
+                                   
+                                   "\n Evolution of the mean exogeneous water potential arpound the plant.\n
+                                   This is an an indication of the environment pressure on the plant.",
+                                   
+                                   "\n Evolution of the sum of water entering (positive) or existing the plant (negative).\n 
+                                   The root and shoot values should cancel each other \n
+                                   (no storage of water). ",
+                                   
+                                   "\n Evolution of the relative aperture of the stomata.\n 
+                                   If =1, then totaly open. If =0, totaly closed.\n 
+                                   This affects the water flow and photosynthesis in the plant",
+                                   
+                                   "\n Evolution of the relative activity of the aquaporins\n 
+                                   If =1, then totaly open. If =0, totaly closed\n 
+                                   This aff
+                                   ects the radial water flow in the roots",
+                                   
+                                   "\n Evolution of the relative onset of cavitation.\n 
+                                   If =1, then no cavitation. If =0, full cavitation\n 
+                                   This affects the axial water flow in the roots",
+                                   
+                                   "\n Evolution of the nitrogen uptake by the roots",
+                                   
+                                   "\n Evolution of the nitrogen satisfaction in the plant"))
 
 # Function to update the XML file
 updateXML <- function(value, name, xml){
@@ -96,14 +134,22 @@ updateParameters <- function(xml, input){
   updateXML(input$LeafApparitionRate, deparse(substitute(LeafApparitionRate)), xml)
   updateXML(input$StressType, deparse(substitute(StressType)), xml)
   updateXML(input$StartStress, deparse(substitute(StartStress)), xml)
+  updateXML(-input$WaterPotInit, deparse(substitute(WaterPotInit)), xml)
   updateXML(input$ReWateringFrequence, deparse(substitute(ReWateringFrequence)), xml)
+  updateXML(input$WateringFrequence, deparse(substitute(WateringFrequence)), xml)
   updateXML(input$RadialModifier, deparse(substitute(RadialModifier)), xml)
   updateXML(input$AxialModifier, deparse(substitute(AxialModifier)), xml)
   updateXML(input$maxPAR, deparse(substitute(maxPAR)), xml)
+  updateXML(input$maxPAR2, deparse(substitute(maxPAR2)), xml)
+  updateXML(input$switchPAR, deparse(substitute(switchPAR)), xml)
   updateXML(input$maxTemperature, deparse(substitute(maxTemperature)), xml)
   updateXML(input$JMax, deparse(substitute(JMax)), xml)
   updateXML(input$VMax, deparse(substitute(VMax)), xml)
   updateXML(input$Aerenchyma, deparse(substitute(Aerenchyma)), xml)
+  updateXML(input$Km, deparse(substitute(Km)), xml)
+  updateXML(input$Knu, deparse(substitute(Knu)), xml)
+  updateXML(input$IMax, deparse(substitute(IMax)), xml)
+  updateXML(input$NitrogenInit, deparse(substitute(NitrogenInit)), xml)
   updateXML("www/results.csv", deparse(substitute(outputFileName)), xml)
   
   
@@ -112,20 +158,27 @@ updateParameters <- function(xml, input){
   }else{
     updateXML(0, deparse(substitute(ResolveCarbon)), xml)
   }
+  
+  if(input$ResolveNitrogen){
+    updateXML(1, deparse(substitute(ResolveNitrogen)), xml)  
+  }else{
+    updateXML(0, deparse(substitute(ResolveNitrogen)), xml)
+  }
+  
   if(input$ResolveWater){
     updateXML(1, deparse(substitute(ResolveWater)), xml)
   }else{
     updateXML(0, deparse(substitute(ResolveWater)), xml)
   }
-  if(input$HydraulicRegulation){
-    updateXML(1, deparse(substitute(StomataModifier)), xml)  
-    updateXML(1, deparse(substitute(AQPModifier)), xml)  
-    updateXML(1, deparse(substitute(CavitationModifier)), xml)  
-  }else{
-    updateXML(0, deparse(substitute(StomataModifier)), xml)  
-    updateXML(0, deparse(substitute(AQPModifier)), xml)  
-    updateXML(0, deparse(substitute(CavitationModifier)), xml)  
-  }
+  # if(input$HydraulicRegulation){
+  #   updateXML(1, deparse(substitute(StomataModifier)), xml)  
+  #   updateXML(1, deparse(substitute(AQPModifier)), xml)  
+  #   updateXML(1, deparse(substitute(CavitationModifier)), xml)  
+  # }else{
+  #   updateXML(0, deparse(substitute(StomataModifier)), xml)  
+  #   updateXML(0, deparse(substitute(AQPModifier)), xml)  
+  #   updateXML(0, deparse(substitute(CavitationModifier)), xml)  
+  # }
   return(xml)
 }
 
