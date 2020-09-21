@@ -4,7 +4,7 @@
          <Options>
                <Simulation>
                      <TimeStep>1</TimeStep>
-                     <TotalTime>300</TotalTime>
+                     <TotalTime>400</TotalTime>
                      <BaseTemperature>6.0</BaseTemperature>
                      <outputFileName>www/results-base.csv</outputFileName>
                </Simulation>
@@ -63,6 +63,8 @@
                      <Knu>0.0043</Knu>
                      <IMax>0.1</IMax>
                      <NitrogenInit>0.5</NitrogenInit>
+                     <NitrogenInit2>0.5</NitrogenInit2>
+                     <switchNitrogen>400</switchNitrogen>
                </Nitrogen>
          </Options>
          <Shoot>

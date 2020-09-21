@@ -37,11 +37,11 @@ shinyServer(
     
     observe({
       if(is.null(rs$data)){
-        xml <- xmlParse("www/maize.xml")
-        xml <- updateParameters(xml, input)  # Update the simulation parameters
-        saveXML(xml, file='www/current_maize.xml') # Store the update XML 
-        system("java -Xmx6000m -jar www/planet.jar www/current_maize.xml")
-        data <- fread("www/results.csv")
+        # xml <- xmlParse("www/maize.xml")
+        # xml <- updateParameters(xml, input)  # Update the simulation parameters
+        # saveXML(xml, file='www/current_maize.xml') # Store the update XML 
+        # system("java -Xmx6000m -jar www/planet.jar www/current_maize.xml")
+        data <- fread("www/results-init.csv")
         data <- updateNames(data)
         data$sim <- 0
         rs$data<- data
@@ -73,7 +73,8 @@ shinyServer(
         gather(key=var, value=value, -c(sim,temps, z)) %>% 
         ggplot(aes(z, value, colour=factor(temps), group=factor(temps))) +
         coord_flip() + 
-        geom_line() + 
+        scale_colour_manual(values=cbPalette)+
+        geom_line(size = 2) + 
         facet_wrap(~sim, ncol = 2) +
         xlab("Depth [cm]") + 
         ylab("Soil water content [MPa]") 
@@ -108,7 +109,8 @@ shinyServer(
           ggplot(aes(temps, value, colour=factor(sim), lty=name))
       }
       
-      pl + geom_line() + 
+      pl + geom_line(size = 2) + 
+        scale_colour_manual(values=cbPalette)+
         # facet_wrap(~var, scales="free", ncol = 2) + 
         geom_vline(xintercept = (input$time_to_plot), lty=2) +
         xlab("Time [hours]") + 
@@ -130,8 +132,9 @@ shinyServer(
         pl <- temp %>%
           ggplot(aes(temps, value, colour=factor(sim)))
       
-      pl + geom_line() + 
+      pl + geom_line(size = 2) + 
         # facet_wrap(~var, scales="free", ncol = 2) + 
+        scale_colour_manual(values=cbPalette)+
         geom_vline(xintercept = (input$time_to_plot), lty=2) +
         xlab("Time [hours]") + 
         ylab("Water potential in top soil layer [MPa]")+
@@ -155,7 +158,8 @@ shinyServer(
         filter(organ %in% input$plot_organ_water) %>% 
         filter(var == input$plot_water) %>% 
         ggplot(aes(temps, value, lty=organ, colour=factor(sim))) +
-        geom_line() + 
+        geom_line(size = 2) + 
+        scale_colour_manual(values=cbPalette)+
         # facet_wrap(~var, scales="free", ncol = 2) + 
         geom_vline(xintercept = (input$time_to_plot), lty=2) +
         xlab("Time [hours]") + 
@@ -177,7 +181,8 @@ shinyServer(
         gather(key=var, value=value, -c(sim,temps,organ)) %>% 
         filter(var == input$plot_nitrogen) %>% 
         ggplot(aes(temps, value, lty=organ, colour=factor(sim))) +
-        geom_line() + 
+        geom_line(size = 2) + 
+        scale_colour_manual(values=cbPalette)+
         # facet_wrap(~var, scales="free", ncol = 2) + 
         geom_vline(xintercept = (input$time_to_plot), lty=2) +
         xlab("Time [hours]") + 
@@ -212,10 +217,11 @@ shinyServer(
           ggplot(aes(temps, value, colour=factor(sim), lty=name))
       }
       
-      pl + geom_line() + 
+      pl + geom_line(size = 2) + 
         # facet_wrap(~var, scales="free", ncol = 2) + 
         geom_vline(xintercept = (input$time_to_plot), lty=2) +
         xlab("Time [hours]") + 
+        scale_colour_manual(values=cbPalette)+
         ylab(axis_names$text[axis_names$id == input$plot_archi])+
         ggtitle(axis_names$text[axis_names$id == input$plot_archi])+ 
         labs(caption=axis_names$descr[axis_names$id == input$plot_archi])

@@ -149,7 +149,9 @@ updateParameters <- function(xml, input){
   updateXML(input$Km, deparse(substitute(Km)), xml)
   updateXML(input$Knu, deparse(substitute(Knu)), xml)
   updateXML(input$IMax, deparse(substitute(IMax)), xml)
-  updateXML(input$NitrogenInit, deparse(substitute(NitrogenInit)), xml)
+  updateXML(input$NitrogenInit / 25, deparse(substitute(NitrogenInit)), xml)
+  updateXML(input$NitrogenInit2 / 25, deparse(substitute(NitrogenInit2)), xml)
+  updateXML(input$switchNitrogen, deparse(substitute(switchNitrogen)), xml)
   updateXML("www/results.csv", deparse(substitute(outputFileName)), xml)
   
   
@@ -183,3 +185,4 @@ updateParameters <- function(xml, input){
 }
 
 
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")

@@ -5,9 +5,8 @@ account: plantmodelling
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 507375
-bundleId: 1767966
+bundleId: 2620247
 url: https://plantmodelling.shinyapps.io/PlaNet_Maize/
-when: 1545035944.88384
+when: 1574802869.81451
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: www/.DS_Store|www/maize.xsd|www/planet-5-0.9-carbon.csv|www/results-base

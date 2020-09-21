@@ -71,7 +71,7 @@ ui <- dashboardPage(
       # Water tab content
       tabItem(tabName = "results",
             fluidRow(
-              column(width = 6,
+              column(width = 4,
                      
                 box(
                   status = "success",  width = NULL,solidHeader = TRUE, title = "Command center",
@@ -92,7 +92,7 @@ ui <- dashboardPage(
                   # Title can include an icon
                   title = tagList(shiny::icon("gear"), "Parameters"), width = NULL,
                   tabPanel("General",
-                           helper(sliderInput("TotalTime", "Simulation time [h]", 100, 600, 300, step = 1), 
+                           helper(sliderInput("TotalTime", "Simulation time [h]", 100, 1200, 400, step = 1), 
                                   icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "TotalTime", size = "m")#,
                            
                   ),
@@ -139,7 +139,7 @@ ui <- dashboardPage(
                            bsCollapse(multiple = FALSE, open = "col2", id = "collapse2",
                                       
                                       bsCollapsePanel("Environment", 
-                                                      helper(sliderInput("WaterPotInit", "Initial soil water potential [MPa]", 0, 2.5, 0.15, step = 0.05), icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "WaterPotInit", size = "m"),
+                                                      helper(sliderInput("WaterPotInit", "Initial soil water potential [-MPa]", 0, 2.5, 0.15, step = 0.05), icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "WaterPotInit", size = "m"),
 
                                                       helper(selectInput("StressType", "Stress type", choices = c("None" = 0, "Gradual drying" = 11, "Drying cycles" = 12)), icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "StressType", size = "m"),
                                                       
@@ -185,7 +185,11 @@ ui <- dashboardPage(
                                          helper(sliderInput("Knu", "Knu [-]", 0.001, 0.01, 0.004, step = 0.001),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "Knu", size = "m")
                                       ),   
                                       bsCollapsePanel("Environment",
-                                         helper(sliderInput("NitrogenInit", "Initial nitrogen content [mmol]", 0.01, 1, 0.05, step = 0.005),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "NitrogenInit", size = "m")
+                                         helper(sliderInput("NitrogenInit", "Initial nitrogen content [mmol/l]", 0.01, 3, 1.43, step = 0.01),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "NitrogenInit", size = "m"),
+                                         helper(sliderInput("NitrogenInit2", "Second nitrogen content [mmol/l]", 0.01, 3, 1.43, step = 0.01),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "NitrogenInit", size = "m"),
+                                         helper(sliderInput("switchNitrogen", "Time to switch between first and second nitrogen content [h]", 0, 800, 400, step = 1),icon = "question-circle", colour = "#337ab7",type = "markdown", title = "", content = "NitrogenInit", size = "m")
+                                         
+                                         
                                       )
                            )
                            
@@ -195,7 +199,7 @@ ui <- dashboardPage(
               ),
                 
                 
-              column(width = 6,
+              column(width = 8,
 
                 
                 tabBox(
